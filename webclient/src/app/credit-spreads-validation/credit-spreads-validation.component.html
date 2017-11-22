@@ -1,0 +1,72 @@
+
+<mat-grid-list cols="12" rowHeight="80px">
+
+  <!-- top bar -->
+  <mat-grid-tile [colspan]="12" [rowspan]="1">
+    <mat-toolbar>Import Credit Spreads</mat-toolbar>
+  </mat-grid-tile>
+
+  <div class="spinner" *ngIf="!(in_sync | async)">
+    <mat-spinner mode="indeterminate" [diameter]="50" [strokeWidth]="5"></mat-spinner>
+  </div>
+
+  <!-- filters area -->
+  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+  <!-- region filter -->
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <ft-credit-spreads-filter
+                  [placeholder_text]="placeholder_text_region"
+                  [options]="regions | async"
+                  (selectedFilter)="selectRegion($event)">
+    </ft-credit-spreads-filter>
+  </mat-grid-tile>
+
+  <!-- sector filter -->
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <ft-credit-spreads-filter
+                  [placeholder_text]="placeholder_text_sector"
+                  [options]="sectors | async"
+                  (selectedFilter)="selectSector($event)">
+    </ft-credit-spreads-filter>
+  </mat-grid-tile>
+
+  <!-- checkbox for only instruments with positions -->
+  <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <mat-checkbox [(ngModel)]="selectedWithPositions" (change)="selectWithPositions($event)">only instruments with positions</mat-checkbox>
+  </mat-grid-tile>
+
+  <!-- button validate shown spreads -->
+  <mat-grid-tile [colspan]="2" [rowspan]="1">
+    <button mat-raised-button matTooltip="Validate shown spreads" (click)="validateShownSpreads()">Validate shown spreads</button>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+
+  <!-- main table -->
+  <mat-grid-tile [colspan]="12" [rowspan]="4">
+    <ft-credit-spreads-list
+            [tableData]="dataTable | async"
+            (selectSpread)="selectSpread($event)">
+          </ft-credit-spreads-list>
+  </mat-grid-tile>
+
+  <!--<mat-grid-tile [colspan]="12" [rowspan]="1"></mat-grid-tile>-->
+
+  <!-- detail table and meta infos -->
+  <mat-grid-tile [colspan]="12" [rowspan]="12">
+  <ft-checks-detail
+        [checkDataGrid]="dataCheckGrid | async"
+        [checkData]="dataCheck | async"
+        [manualValue]="manualValue | async"
+        [icvVector]="icvVector | async"
+        [brokersPriority]="brokersPriority | async"
+        [officialRatings]="officialRatings | async"
+        [criticalTransitions]="criticalTransitions | async"
+        (validateSingleSpread)="validateSingleSpread($event)"
+        (checkSingleSpread)="checkSingleSpread($event)">
+  </ft-checks-detail>
+  </mat-grid-tile>
+
+</mat-grid-list>
+
