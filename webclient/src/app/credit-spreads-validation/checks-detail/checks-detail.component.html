@@ -1,0 +1,113 @@
+
+<mat-grid-list cols="1" rowHeight="80px" *ngIf="!checkData.check">
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <mat-card-content>
+      Select a spread from the list for showing details
+    </mat-card-content>
+  </mat-grid-tile>
+</mat-grid-list>
+
+
+<mat-grid-list cols="12" rowHeight="80px" *ngIf="checkData && checkData.check && checkData.spread">
+
+    <!-- identifiers -->
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <mat-card class="identifier">
+      <mat-card-header class="identifier">{{ checkData.spread.common.instr_ref }}</mat-card-header>
+        <br>
+        <mat-card-subtitle class="identifier">
+        {{ checkData.spread.common.isin}}
+        ({{ checkData.spread.common.region}} / {{ checkData.spread.common.sector}} / {{checkData.spread.common.currency}})
+      </mat-card-subtitle>
+      </mat-card>
+    </mat-grid-tile>
+
+  <!-- official ratings -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+        <div *ngIf="officialRatings">
+          <br>Moodys: {{ officialRatings.credit_rating_moodys }} (issuer {{ officialRatings.issuer_credit_rating_moodys }})
+          <br>S&P: {{ officialRatings.credit_rating_s_p }} (issuer {{ officialRatings.issuer_credit_rating_s_p }})
+        </div>
+    </mat-grid-tile>
+
+  <!-- who validate it and when -->
+    <mat-grid-tile [colspan]="4" [rowspan]="1">
+      <div>
+        <div *ngIf="checkData.spread.pre_valid.validate">
+          current: validated by {{ checkData.spread.valid.user_id | uppercase }} ({{ checkData.spread.valid.validation_date | date }})
+        </div>
+
+        <div *ngIf="checkData.spread.pre_valid.is_validate">
+          proposed: validated by {{ checkData.spread.pre_valid.user_id | uppercase }} ({{ checkData.spread.pre_valid.validation_date | date }})
+        </div>
+      </div>
+    </mat-grid-tile>
+
+    <!-- the critical transitions -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <ul>
+        <div *ngFor="let transition of criticalTransitions">
+          {{ transition.transition_rating }}: {{ transition.transition_spread }}
+        </div>
+      </ul>
+    </mat-grid-tile>
+
+    <!-- the detail table -->
+    <mat-grid-tile [colspan]="10" [rowspan]="3">
+      <ag-grid-angular
+        #detailGrid
+        class="ag-material"
+        [rowData]="checkDataGrid"
+        [gridOptions]="gridOptions"
+        (rowDataChanged)="gridResize()">
+      </ag-grid-angular>
+    </mat-grid-tile>
+
+    <!-- the ICV vector -->
+    <mat-grid-tile [colspan]="2" [rowspan]="9">
+      <ft-icv-vector [icvVector]="icvVector">
+      </ft-icv-vector>
+    </mat-grid-tile>
+
+    <!-- section for the manual value input -->
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+       <mat-form-field>
+        <input matInput [(ngModel)]="manualValue" placeholder="spread manual overwrite">
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <button mat-raised-button (click)="check()">check spread</button>
+    </mat-grid-tile>
+
+    <!-- note on the current spreads -->
+    <mat-grid-tile [colspan]="7" [rowspan]="1">
+      <div>
+        <div>Note on current spread:</div>
+        <div *ngIf="checkData.spread.valid.credit_spread_fam_text"></div>
+        <div>{{ checkData.spread.valid.credit_spread_fam_text }}</div>
+      </div>
+    </mat-grid-tile>
+
+    <!-- validate single button -->
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <button mat-raised-button (click)="validate()">validate spread</button>
+    </mat-grid-tile>
+
+  <!-- section for check results -->
+    <mat-grid-tile [colspan]="7" [rowspan]="5">
+      <ft-checkresults
+        [checkResults]="checkResults | async">
+      </ft-checkresults>
+    </mat-grid-tile>
+
+    <!-- note on the proposed spreads -->
+    <mat-grid-tile [colspan]="3" [rowspan]="4">
+    <mat-input-container class="note">
+      <div>Note:</div>
+      <textarea matInput matTextareaAutosize [(ngModel)]="checkData.spread.pre_valid.credit_spread_fam_text"></textarea>
+    </mat-input-container>
+    </mat-grid-tile>
+
+
+</mat-grid-list>

@@ -1,0 +1,10 @@
+
+<ag-grid-angular
+  #spreadGrid
+  class="ag-material"
+  [rowData]="tableData"
+  [gridOptions]="gridOptions"
+  (rowDataChanged)="gridResize()"
+  (rowClicked)="select($event)">
+</ag-grid-angular>
+

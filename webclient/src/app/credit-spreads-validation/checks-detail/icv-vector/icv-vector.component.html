@@ -1,0 +1,12 @@
+
+
+<mat-card-header>spread matrix</mat-card-header>
+
+<ag-grid-angular
+    #icvVectorGrid
+    class="ag-material"
+    [gridOptions]="gridOptions"
+    [rowData]="icvVector"
+    (rowDataChanged)="gridResize()">
+</ag-grid-angular>
+

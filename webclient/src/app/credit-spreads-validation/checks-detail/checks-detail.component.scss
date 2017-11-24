@@ -1,0 +1,60 @@
+
+ag-grid-angular {
+  width:100%;
+  height: 140px;
+  color: #083074;
+}
+
+.ag-material {
+  font-size: 12px;
+  color: #083074;
+}
+
+.mat-form-field {
+  font-size: 12px;
+}
+
+ft-checkresults {
+  width: 100%;
+  text-align: center;
+}
+
+ft-icv-vector {
+  //margin-top: 255px;
+  margin-top: -42px;
+}
+
+.ag-material .ag-header-cell-label {
+  text-align: center;
+}
+
+mat-card.identifier {
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  //font-size: 12px;
+
+}
+
+
+mat-card-header.identifier {
+  text-align: center;
+}
+
+mat-card-subtitle.identifier {
+  text-align: center;
+}
+
+mat-input-container.note {
+  width: 80%;
+}
+
+textarea {
+  margin-top: 15px;
+  height: 350px !important;
+
+}
+
+.note {
+  height: 350px;
+}
